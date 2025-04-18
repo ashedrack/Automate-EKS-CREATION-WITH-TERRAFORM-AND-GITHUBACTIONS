@@ -34,6 +34,24 @@ aws s3api put-bucket-versioning \
 aws s3api put-bucket-encryption \
   --bucket dev-aj-tf-bucket \
   --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
+```
+
+### Cleanup Commands
+When you're done and want to clean up the infrastructure:
+
+```bash
+# First, empty the S3 bucket (required before deletion)
+aws s3 rm s3://dev-aj-tf-bucket --recursive
+
+# Delete the S3 bucket
+aws s3api delete-bucket \
+  --bucket dev-aj-tf-bucket \
+  --region us-east-1
+
+# Delete the DynamoDB table
+aws dynamodb delete-table \
+  --table-name Lock-Files \
+  --region us-east-1
 
 ## 🌟 Overview
 This project covers:
