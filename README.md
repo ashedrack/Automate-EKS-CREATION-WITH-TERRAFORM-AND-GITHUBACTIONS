@@ -9,6 +9,32 @@
 
 Welcome to the repository for **Configuring Production-Ready EKS Clusters with Terraform and Automating with GitHub Actions**! This repository accompanies my blog post and demonstrates the practical steps to set up and automate an EKS cluster.
 
+### Prerequisites Setup Commands
+
+```bash
+# Create DynamoDB table for state locking (On-Demand pricing)
+aws dynamodb create-table \
+  --table-name Lock-Files \
+  --attribute-definitions AttributeName=LockID,AttributeType=S \
+  --key-schema AttributeName=LockID,KeyType=HASH \
+  --billing-mode PAY_PER_REQUEST \
+  --region us-east-1
+
+# Create S3 bucket for Terraform state with versioning and encryption
+aws s3api create-bucket \
+  --bucket dev-aj-tf-bucket \
+  --region us-east-1
+
+# Enable versioning on the S3 bucket
+aws s3api put-bucket-versioning \
+  --bucket dev-aj-tf-bucket \
+  --versioning-configuration Status=Enabled
+
+# Enable server-side encryption
+aws s3api put-bucket-encryption \
+  --bucket dev-aj-tf-bucket \
+  --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
+
 ## 🌟 Overview
 This project covers:
 - **Infrastructure as Code (IaC)**: Use Terraform to define and manage your EKS cluster.
