@@ -7,6 +7,10 @@ on:
         description: 'Path to the .tfvars file'
         required: true
         default: 'dev.tfvars'
+      aws-region:
+        description: 'AWS Region'
+        required: true
+        default: 'us-east-1'
       action:
         type: choice
         description: 'Apply or Destroy'
@@ -18,9 +22,9 @@ on:
         default: 'apply'
 
 env:
-      AWS_REGION: us-east-2
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 permissions:
   contents: read
@@ -42,7 +46,6 @@ jobs:
 
   CheckOut-Repo:
     runs-on: ubuntu-latest
-    environment: production
 
     defaults:
       run:
@@ -50,7 +53,7 @@ jobs:
         working-directory: eks
 
     env:
-      AWS_REGION: us-east-2
+      AWS_REGION: us-east-1
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
